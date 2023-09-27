@@ -73,7 +73,7 @@ def main(save_fig: bool, result_dir: str, num_trees: int, tree_depth: int):
                          np.arange(y_min, y_max, h))
 
     # Get the color maps
-    cm = plt.cm.get_cmap('RdBu')
+    cm = plt.colormaps.get_cmap('RdBu')
     cm_bright = ListedColormap(['#FF0000', '#0000FF'])
 
     # Plot the training points

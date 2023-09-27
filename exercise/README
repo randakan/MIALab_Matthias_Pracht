@@ -1,0 +1,9 @@
+Extract the exercise directory to the data directory. I.e. the data directory should contain:
+ ./atlas
+ ./exercise
+ ./test
+ ./train
+ ./exp1_n2.txt
+ ./exp1_n4.txt
+ ./exp5_n2.txt
+ ./exp5_n4.txt
