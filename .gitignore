@@ -2,7 +2,7 @@
 ### Python template
 
 # custom .gitignores
-data/
+./data/
 *.png
 
 # Byte-compiled / optimized / DLL files
