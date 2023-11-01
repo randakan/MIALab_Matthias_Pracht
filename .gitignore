@@ -1,10 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Python template
 
-# custom .gitignores
-./data/
-*.png
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -243,7 +239,7 @@ bin/toy-example-model/
 bin/toy-example-result/
 bin/mia-model/
 bin/mia-result/
-data/
+/data/
 *.nii.gz
 *.mha
 exercise/randomforest_plots/
