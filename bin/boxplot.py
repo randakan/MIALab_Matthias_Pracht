@@ -8,10 +8,16 @@ def main():
     # todo: read the data into a list
     # todo: plot the Dice coefficients per label (i.e. white matter, gray matter, hippocampus, amygdala, thalamus)
     #  in a boxplot
-    path = 'bin/mia-result/'
-    folder = '2023-11-01-10-45'
-    file = pd.read_csv(path + folder + '/results.csv')
-    pd.DataFrame.boxplot(file)
+
+    path = 'mia-result/'
+    folder = '2023-11-04-12-37-03'
+    file = pd.read_csv(path + folder + '/results.csv', sep=';')
+    file.boxplot(column='DICE', by='LABEL', fontsize=12)
+    plt.suptitle('')
+    plt.title('Dice Values of ' + folder, fontsize=14)
+    plt.xlabel('Brain structure', fontsize=12)
+    plt.ylabel('Dice score', fontsize=12)
+    plt.show()
 
     # alternative: instead of manually loading/reading the csv file you could also use the pandas package
     # but you will need to install it first ('pip install pandas') and import it to this file ('import pandas as pd')

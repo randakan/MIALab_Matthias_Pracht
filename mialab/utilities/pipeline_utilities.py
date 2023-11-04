@@ -82,7 +82,7 @@ class FeatureExtractor:
             self.img.feature_images[FeatureImageTypes.T2w_GRADIENT_INTENSITY] = \
                 sitk.GradientMagnitude(self.img.images[structure.BrainImageTypes.T2w])
 
-        warnings.warn('No features from T2-weighted image extracted.')
+        # warnings.warn('No features from T2-weighted image extracted.')
 
         if self.coordinates_feature:
             atlas_coordinates = fltr_feat.AtlasCoordinates()
@@ -306,7 +306,8 @@ def init_evaluator() -> eval_.Evaluator:
     metrics = [metric.DiceCoefficient()]
     # todo: add hausdorff distance, 95th percentile (see metric.HausdorffDistance)
     hausdorff = [metric.HausdorffDistance(percentile=95.0)]
-    warnings.warn('Initialized evaluation with the Dice coefficient. Do you know other suitable metrics?')
+
+    # warnings.warn('Initialized evaluation with the Dice coefficient. Do you know other suitable metrics?')
 
     # define the labels to evaluate
     labels = {1: 'WhiteMatter',
