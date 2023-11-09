@@ -10,7 +10,7 @@ def main():
     #  in a boxplot
 
     path = 'mia-result/'
-    folder = '2023-11-08-09-47-04'
+    folder = '2023-11-09-18-49-19'
     file = pd.read_csv(path + folder + '/results.csv', sep=';')
     file.boxplot(column='DICE', by='LABEL', fontsize=12)
     plt.suptitle('')
