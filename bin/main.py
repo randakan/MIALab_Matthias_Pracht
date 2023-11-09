@@ -73,8 +73,8 @@ def main(result_dir: str, data_atlas_dir: str, data_train_dir: str, data_test_di
     labels_train = np.concatenate([img.feature_matrix[1] for img in images]).squeeze()
 
     forest = sk_ensemble.RandomForestClassifier(max_features=images[0].feature_matrix[0].shape[1],
-                                                n_estimators=100,
-                                                max_depth=200,
+                                                n_estimators=50,
+                                                max_depth=100,
                                                 random_state=42)
 
     start_time = timeit.default_timer()
