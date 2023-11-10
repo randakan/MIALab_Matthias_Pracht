@@ -141,8 +141,10 @@ class ImageRegistration(pymia_fltr.Filter):
         transform = params.transformation
         is_ground_truth = params.is_ground_truth  # the ground truth will be handled slightly different
 
-        image = sitk.Resample(image1=image, referenceImage=atlas, transform=transform,
+        image = sitk.Resample(image1=image, transform=transform,
                               interpolator=sitk.sitkNearestNeighbor)
+
+        #image = sitk.Resample(image, params.transformation)
 
         if not is_ground_truth:
             warnings.warn('No registration implemented for when it is not ground_truth')
