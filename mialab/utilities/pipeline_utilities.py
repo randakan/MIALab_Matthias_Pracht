@@ -73,8 +73,9 @@ class FeatureExtractor:
             atlas_coordinates = fltr_feat.AtlasCoordinates()
             self.img.feature_images[FeatureImageTypes.ATLAS_COORD] = \
                 atlas_coordinates.execute(self.img.images[structure.BrainImageTypes.T1w])
-            self.img.feature_images[FeatureImageTypes.ATLAS_COORD] = \
-                atlas_coordinates.execute(self.img.images[structure.BrainImageTypes.T2w])
+            """self.img.feature_images[FeatureImageTypes.ATLAS_COORD] = \
+                atlas_coordinates.execute(self.img.images[structure.BrainImageTypes.T2w]) """
+            # FIXME : perhaps one of the mistakes? nope didn't seem like it 2023-11-15-10-58-45
 
         if self.intensity_feature:
             self.img.feature_images[FeatureImageTypes.T1w_INTENSITY] = self.img.images[structure.BrainImageTypes.T1w]

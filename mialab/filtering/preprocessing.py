@@ -141,11 +141,18 @@ class ImageRegistration(pymia_fltr.Filter):
         transform = params.transformation
         is_ground_truth = params.is_ground_truth  # the ground truth will be handled slightly different
 
-        image = sitk.Resample(image1=image, referenceImage=atlas, transform=transform,
-                              interpolator=sitk.sitkNearestNeighbor)
+        """image = sitk.Resample(image1=image, referenceImage=atlas, transform=transform,
+                              interpolator=sitk.sitkNearestNeighbor)  # """
 
-        if not is_ground_truth:
-            warnings.warn('No registration implemented for when it is not ground_truth')
+        if is_ground_truth:
+            image = sitk.Resample(image1=image, transform=transform,
+                                  interpolator=sitk.sitkNearestNeighbor,
+                                  defaultPixelValue=0.0, outputPixelType=image.GetPixelIDValue())
+        else:
+            # FIXME : using "referenceImage = atlas," gives error for not matching shapes in ITK-SNAP
+            image = sitk.Resample(image1=image, transform=transform,
+                                  interpolator=sitk.sitkBSpline,
+                                  defaultPixelValue=0.0, outputPixelType=image.GetPixelIDValue())  # """
 
         # note: if you are interested in registration, and want to test it, have a look at
         # pymia.filtering.registration.MultiModalRegistration. Think about the type of registration, i.e.
