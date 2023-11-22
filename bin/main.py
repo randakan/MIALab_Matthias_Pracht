@@ -164,7 +164,7 @@ def main(result_dir: str, data_atlas_dir: str, data_train_dir: str, data_test_di
     writer.ConsoleStatisticsWriter(functions=functions).write(evaluator_DICE.results)
 
     print('\nAggregated statistic results... (HSDRF)')
-    writer.ConsoleStatisticsWriter(functions=functions).write(evaluator_DICE.results)
+    writer.ConsoleStatisticsWriter(functions=functions).write(evaluator_HSDRF.results)
 
     # clear results such that the evaluator is ready for the next evaluation
     evaluator_DICE.clear()
