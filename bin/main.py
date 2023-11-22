@@ -89,7 +89,8 @@ def main(result_dir: str, data_atlas_dir: str, data_train_dir: str, data_test_di
     print('-' * 5, 'Testing...')
 
     # initialize evaluator
-    evaluator = putil.init_evaluator()
+    evaluator_DICE = putil.init_evaluator("Dice")
+    evaluator_HSDRF = putil.init_evaluator("Hausdorff")
 
     # crawl the training image directories
     crawler = futil.FileSystemDataCrawler(data_test_dir,
@@ -118,7 +119,8 @@ def main(result_dir: str, data_atlas_dir: str, data_train_dir: str, data_test_di
         image_probabilities = conversion.NumpySimpleITKImageBridge.convert(probabilities, img.image_properties)
 
         # evaluate segmentation without post-processing
-        evaluator.evaluate(image_prediction, img.images[structure.BrainImageTypes.GroundTruth], img.id_)
+        evaluator_DICE.evaluate(image_prediction, img.images[structure.BrainImageTypes.GroundTruth], img.id_)
+        evaluator_HSDRF.evaluate(image_prediction, img.images[structure.BrainImageTypes.GroundTruth], img.id_)
 
         images_prediction.append(image_prediction)
         images_probabilities.append(image_probabilities)
@@ -129,30 +131,44 @@ def main(result_dir: str, data_atlas_dir: str, data_train_dir: str, data_test_di
                                                      post_process_params, multi_process=False)  # FIXME: i ha False gsetzt
 
     for i, img in enumerate(images_test):
-        evaluator.evaluate(images_post_processed[i], img.images[structure.BrainImageTypes.GroundTruth],
-                           img.id_ + '-PP')
+        evaluator_DICE.evaluate(images_post_processed[i], img.images[structure.BrainImageTypes.GroundTruth],
+                                img.id_ + '-PP')
+        evaluator_HSDRF.evaluate(images_post_processed[i], img.images[structure.BrainImageTypes.GroundTruth],
+                                 img.id_ + '-PP')  # """
 
         # save results
         sitk.WriteImage(images_prediction[i], os.path.join(result_dir, images_test[i].id_ + '_SEG.mha'), True)
-        sitk.WriteImage(images_post_processed[i], os.path.join(result_dir, images_test[i].id_ + '_SEG-PP.mha'), True)
+        # FIXME disabled as no PP is used: sitk.WriteImage(images_post_processed[i], os.path.join(result_dir, images_test[i].id_ + '_SEG-PP.mha'), True)
 
     # use two writers to report the results
     os.makedirs(result_dir, exist_ok=True)  # generate result directory, if it does not exists
-    result_file = os.path.join(result_dir, 'results.csv')
-    writer.CSVWriter(result_file).write(evaluator.results)
+    result_file = os.path.join(result_dir, 'results_DICE.csv')
+    result_file_HSDRF = os.path.join(result_dir, 'results_HSDRF.csv')
+    writer.CSVWriter(result_file).write(evaluator_DICE.results)
+    writer.CSVWriter(result_file_HSDRF).write(evaluator_HSDRF.results)
 
-    print('\nSubject-wise results...')
-    writer.ConsoleWriter().write(evaluator.results)
+    print('\nSubject-wise results... (DICE)')
+    writer.ConsoleWriter().write(evaluator_DICE.results)
+
+    print('\nSubject-wise results... (HSDRF)')
+    writer.ConsoleWriter().write(evaluator_HSDRF.results)
 
     # report also mean and standard deviation among all subjects
-    result_summary_file = os.path.join(result_dir, 'results_summary.csv')
+    result_summary_file_DICE = os.path.join(result_dir, 'results_summary_DICE.csv')
+    result_summary_file_HSDRF = os.path.join(result_dir, 'results_summary_HSDRF.csv')
     functions = {'MEAN': np.mean, 'STD': np.std}
-    writer.CSVStatisticsWriter(result_summary_file, functions=functions).write(evaluator.results)
-    print('\nAggregated statistic results...')
-    writer.ConsoleStatisticsWriter(functions=functions).write(evaluator.results)
+    writer.CSVStatisticsWriter(result_summary_file_DICE, functions=functions).write(evaluator_DICE.results)
+    writer.CSVStatisticsWriter(result_summary_file_HSDRF, functions=functions).write(evaluator_HSDRF.results)
+
+    print('\nAggregated statistic results... (DICE')
+    writer.ConsoleStatisticsWriter(functions=functions).write(evaluator_DICE.results)
+
+    print('\nAggregated statistic results... (HSDRF)')
+    writer.ConsoleStatisticsWriter(functions=functions).write(evaluator_DICE.results)
 
     # clear results such that the evaluator is ready for the next evaluation
-    evaluator.clear()
+    evaluator_DICE.clear()
+    evaluator_HSDRF.clear()
 
 
 if __name__ == "__main__":
