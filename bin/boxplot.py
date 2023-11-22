@@ -9,14 +9,24 @@ def main():
     # todo: plot the Dice coefficients per label (i.e. white matter, gray matter, hippocampus, amygdala, thalamus)
     #  in a boxplot
 
+    # Figure Dice
     path = 'mia-result/'
     folder = '2023-11-10-12-10-07'
-    file = pd.read_csv(path + folder + '/results.csv', sep=';')
+    file = pd.read_csv(path + folder + '/results_DICE.csv', sep=';')
     file.boxplot(column='DICE', by='LABEL', fontsize=12)
     plt.suptitle('')
     plt.title('Dice Values of ' + folder, fontsize=14)
     plt.xlabel('Brain structure', fontsize=12)
     plt.ylabel('Dice score', fontsize=12)
+
+    # Figure Hausdorff
+    plt.figure()
+    file = pd.read_csv(path + folder + '/results_HSDRF.csv', sep=';')
+    file.boxplot(column='HSDRF', by='LABEL', fontsize=12)
+    plt.suptitle('')
+    plt.title('Hausdorff distance of ' + folder, fontsize=14)
+    plt.xlabel('Brain structure', fontsize=12)
+    plt.ylabel('Hausdorff distance', fontsize=12)
     plt.show()
 
     # alternative: instead of manually loading/reading the csv file you could also use the pandas package
