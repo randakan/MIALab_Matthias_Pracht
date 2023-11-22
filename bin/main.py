@@ -60,7 +60,7 @@ def main(result_dir: str, data_atlas_dir: str, data_train_dir: str, data_test_di
                                           futil.DataDirectoryFilter())
     pre_process_params = {'skullstrip_pre': True,
                           'normalization_pre': True,
-                          'registration_pre': True,
+                          'registration_pre': False,  # FIXME : switched off, perhaps it fixes the unfitting brains
                           'coordinates_feature': True,
                           'intensity_feature': True,
                           'gradient_intensity_feature': True}

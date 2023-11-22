@@ -112,7 +112,7 @@ class FeatureExtractor:
             # you can exclude background voxels from the training mask generation
             # mask_background = self.img.images[structure.BrainImageTypes.BrainMask]
             # and use background_mask=mask_background in get_mask()
-
+            np.random.seed(42)  # FIXME : we added a random.seed to make the randomness reproducible
             mask = fltr_feat.RandomizedTrainingMaskGenerator.get_mask(
                 self.img.images[structure.BrainImageTypes.GroundTruth],
                 [0, 1, 2, 3, 4, 5],
