@@ -288,19 +288,19 @@ def post_process(img: structure.BrainImage, segmentation: sitk.Image, probabilit
     return pipeline.execute(segmentation)
 
 
-def init_evaluator() -> eval_.Evaluator:
+def init_evaluator(mode="Dice") -> eval_.Evaluator:
     """Initializes an evaluator.
 
     Returns:
         eval.Evaluator: An evaluator.
     """
-
-    # initialize metrics
-    metrics = [metric.DiceCoefficient()]
     # todo: add hausdorff distance, 95th percentile (see metric.HausdorffDistance)
-    hausdorff = [metric.HausdorffDistance(percentile=95.0)]
-
-    # warnings.warn('Initialized evaluation with the Dice coefficient. Do you know other suitable metrics?')
+    # initialize metrics
+    if mode == "Hausdorff":
+        metrics = [metric.HausdorffDistance(percentile=95.0)]
+    else:
+        # default metrics is Dice
+        metrics = [metric.DiceCoefficient()]
 
     # define the labels to evaluate
     labels = {1: 'WhiteMatter',
