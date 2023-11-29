@@ -167,3 +167,48 @@ class ImageRegistration(pymia_fltr.Filter):
         """
         return 'ImageRegistration:\n' \
             .format(self=self)
+
+class FilteringParameters(pymia_fltr.FilterParams):
+    """Skull-stripping parameters."""
+
+    def __init__(self, img_mask: sitk.Image):
+        """Initializes a new instance of the SkullStrippingParameters
+
+        Args:
+            img_mask (sitk.Image): The brain mask image.
+        """
+        self.sigma = 2.5
+        self.NormalizeAcrossScale = 1
+
+class Filtering(pymia_fltr.Filter):
+    """Represents a preprocessing filter."""
+
+    def __init__(self):
+        """Initializes a new instance of the filtering class."""
+        super().__init__()
+
+    def execute(self, image: sitk.Image, params: FilteringParameters = None) -> sitk.Image:
+        """Executes a filtering on an image.
+
+        Args:
+            image (sitk.Image): The image.
+            params (FilteringParams): The parameters for the filter.
+
+        Returns:
+            sitk.Image: The filtered image.
+        """
+
+        meanfilter = sitk.MeanImageFilter()
+        image = meanfilter.Execute(image)
+
+        return image
+
+    def __str__(self):
+        """Gets a printable string representation.
+
+        Returns:
+            str: String representation.
+        """
+        return 'Filtering:\n' \
+            .format(self=self)
+
