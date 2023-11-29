@@ -168,6 +168,7 @@ class ImageRegistration(pymia_fltr.Filter):
         return 'ImageRegistration:\n' \
             .format(self=self)
 
+
 class FilteringParameters(pymia_fltr.FilterParams):
     """Skull-stripping parameters."""
 
@@ -179,6 +180,7 @@ class FilteringParameters(pymia_fltr.FilterParams):
         """
         self.sigma = 2.5
         self.NormalizeAcrossScale = 1
+
 
 class Filtering(pymia_fltr.Filter):
     """Represents a preprocessing filter."""
