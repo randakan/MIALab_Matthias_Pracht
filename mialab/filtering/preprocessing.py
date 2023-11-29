@@ -199,6 +199,7 @@ class Filtering(pymia_fltr.Filter):
         """
 
         meanfilter = sitk.MeanImageFilter()
+        meanfilter.SetRadius(1)
         image = meanfilter.Execute(image)
 
         return image

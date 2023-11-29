@@ -14,7 +14,7 @@ def main():
 
     # Figure Dice
     path = 'mia-result/'
-    folder = '2023-11-22-09-49-00'
+    folder = '2023-11-29-09-40-47'
     file = pd.read_csv(path + folder + '/results_DICE.csv', sep=';')
     a_plot = file.boxplot(column='DICE', by='LABEL', fontsize=fontsize, ax=axs.flatten()[0], return_type='axes')
     plt.suptitle('')
