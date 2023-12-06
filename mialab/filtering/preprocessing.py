@@ -211,13 +211,13 @@ class Filtering(pymia_fltr.Filter):
         gaussian.SetSigma(float(1))
         #image = gaussian.Execute(image)
 
+        normfilter = sitk.NormalizeImageFilter()
+        image = normfilter.Execute(image)
+
         hist_matching_filter = sitk.HistogramMatchingImageFilter()
         hist_matching_filter.SetNumberOfHistogramLevels(256)
         hist_matching_filter.SetNumberOfMatchPoints(7)
-        #image = hist_matching_filter.Execute(image=image, referenceImage=atlas_image)
-
-        normfilter = sitk.NormalizeImageFilter()
-        image = normfilter.Execute(image)
+        image = hist_matching_filter.Execute(image=image, referenceImage=atlas_image)
 
         return image
 
