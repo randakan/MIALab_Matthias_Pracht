@@ -204,6 +204,26 @@ class Filtering(pymia_fltr.Filter):
         meanfilter.SetRadius(1)
         image = meanfilter.Execute(image)"""
 
+        # Create referece for Histogrammatching
+        atlas = params.atlas
+        atlas_image = sitk.Cast(atlas, sitk.sitkFloat64)
+
+        meanfilter = sitk.MeanImageFilter()
+        meanfilter.SetRadius(1)
+        #image = meanfilter.Execute(image)
+
+        gaussian = sitk.SmoothingRecursiveGaussianImageFilter()
+        gaussian.SetSigma(float(1))
+        #image = gaussian.Execute(image)
+
+        normfilter = sitk.NormalizeImageFilter()
+        image = normfilter.Execute(image)
+
+        hist_matching_filter = sitk.HistogramMatchingImageFilter()
+        hist_matching_filter.SetNumberOfHistogramLevels(256)
+        hist_matching_filter.SetNumberOfMatchPoints(7)
+        image = hist_matching_filter.Execute(image=image, referenceImage=atlas_image)
+
         print("using bilateral filter")
         bilatfilter = sitk.BilateralImageFilter()
         #bilatfilter.SetRadius(1)
