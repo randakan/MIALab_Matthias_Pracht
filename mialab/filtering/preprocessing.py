@@ -172,14 +172,13 @@ class ImageRegistration(pymia_fltr.Filter):
 class FilteringParameters(pymia_fltr.FilterParams):
     """Skull-stripping parameters."""
 
-    def __init__(self, img_mask: sitk.Image):
+    def __init__(self, atlas : sitk.Image):
         """Initializes a new instance of the SkullStrippingParameters
 
         Args:
-            img_mask (sitk.Image): The brain mask image.
+            atlas (sitk.Image): The atlas as reference.
         """
-        self.sigma = 2.5
-        self.NormalizeAcrossScale = 1
+        self.atlas = atlas
 
 
 class Filtering(pymia_fltr.Filter):
@@ -200,9 +199,25 @@ class Filtering(pymia_fltr.Filter):
             sitk.Image: The filtered image.
         """
 
+        # Create referece for Histogrammatching
+        atlas = params.atlas
+        atlas_image = sitk.Cast(atlas, sitk.sitkFloat64)
+
         meanfilter = sitk.MeanImageFilter()
         meanfilter.SetRadius(1)
-        image = meanfilter.Execute(image)
+        #image = meanfilter.Execute(image)
+
+        gaussian = sitk.SmoothingRecursiveGaussianImageFilter()
+        gaussian.SetSigma(float(1))
+        #image = gaussian.Execute(image)
+
+        hist_matching_filter = sitk.HistogramMatchingImageFilter()
+        hist_matching_filter.SetNumberOfHistogramLevels(256)
+        hist_matching_filter.SetNumberOfMatchPoints(7)
+        #image = hist_matching_filter.Execute(image=image, referenceImage=atlas_image)
+
+        normfilter = sitk.NormalizeImageFilter()
+        image = normfilter.Execute(image)
 
         return image
 
