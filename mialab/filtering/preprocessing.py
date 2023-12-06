@@ -200,10 +200,15 @@ class Filtering(pymia_fltr.Filter):
             sitk.Image: The filtered image.
         """
 
-        meanfilter = sitk.MeanImageFilter()
+        """meanfilter = sitk.MeanImageFilter()
         meanfilter.SetRadius(1)
-        image = meanfilter.Execute(image)
+        image = meanfilter.Execute(image)"""
 
+        print("using bilateral filter")
+        bilatfilter = sitk.BilateralImageFilter()
+        #bilatfilter.SetRadius(1)
+        image = bilatfilter.Execute(image)
+        print("usiBLUBr")
         return image
 
     def __str__(self):
