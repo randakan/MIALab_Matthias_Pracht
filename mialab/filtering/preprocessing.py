@@ -172,14 +172,13 @@ class ImageRegistration(pymia_fltr.Filter):
 class FilteringParameters(pymia_fltr.FilterParams):
     """Skull-stripping parameters."""
 
-    def __init__(self, img_mask: sitk.Image):
+    def __init__(self, atlas: sitk.Image):
         """Initializes a new instance of the SkullStrippingParameters
 
         Args:
-            img_mask (sitk.Image): The brain mask image.
+            atlas (sitk.Image): The brain mask image.
         """
-        self.sigma = 2.5
-        self.NormalizeAcrossScale = 1
+        self.atlas = atlas
 
 
 class Filtering(pymia_fltr.Filter):
@@ -213,22 +212,23 @@ class Filtering(pymia_fltr.Filter):
         #image = meanfilter.Execute(image)
 
         gaussian = sitk.SmoothingRecursiveGaussianImageFilter()
-        gaussian.SetSigma(float(1))
-        #image = gaussian.Execute(image)
+        gaussian.SetSigma(float(0.5))
+        image = gaussian.Execute(image)
 
         normfilter = sitk.NormalizeImageFilter()
-        image = normfilter.Execute(image)
+        #image = normfilter.Execute(image)
 
         hist_matching_filter = sitk.HistogramMatchingImageFilter()
         hist_matching_filter.SetNumberOfHistogramLevels(256)
         hist_matching_filter.SetNumberOfMatchPoints(7)
-        image = hist_matching_filter.Execute(image=image, referenceImage=atlas_image)
+        #image = hist_matching_filter.Execute(image=image, referenceImage=atlas_image)
 
-        print("using bilateral filter")
-        bilatfilter = sitk.BilateralImageFilter()
+        #print("using bilateral filter")
+        #bilatfilter = sitk.BilateralImageFilter()
         #bilatfilter.SetRadius(1)
-        image = bilatfilter.Execute(image)
-        print("usiBLUBr")
+        #image = bilatfilter.Execute(image)
+        #print("usiBLUBr")
+
         return image
 
     def __str__(self):
