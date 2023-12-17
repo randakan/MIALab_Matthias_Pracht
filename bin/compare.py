@@ -59,8 +59,8 @@ def main():
 
 
 def readFiles(completePath):
-    path = os.path.dirname(completePath)
-    folder = os.path.basename(completePath)
+    path = os.path.dirname(os.path.normpath(completePath))
+    folder = os.path.basename(os.path.normpath(completePath))
 
     fig, axs = plt.subplots(1, 2)
     fontsize = 10
