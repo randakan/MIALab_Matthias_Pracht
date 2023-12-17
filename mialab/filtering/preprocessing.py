@@ -202,7 +202,7 @@ class Filtering(pymia_fltr.Filter):
         """meanfilter = sitk.MeanImageFilter()
         meanfilter.SetRadius(1)
         image = meanfilter.Execute(image)"""
-
+        """
         # Create referece for Histogrammatching
         atlas = params.atlas
         atlas_image = sitk.Cast(atlas, sitk.sitkFloat64)
@@ -222,12 +222,52 @@ class Filtering(pymia_fltr.Filter):
         hist_matching_filter.SetNumberOfHistogramLevels(256)
         hist_matching_filter.SetNumberOfMatchPoints(7)
         #image = hist_matching_filter.Execute(image=image, referenceImage=atlas_image)
-
+        """
         #print("using bilateral filter")
         #bilatfilter = sitk.BilateralImageFilter()
         #bilatfilter.SetRadius(1)
         #image = bilatfilter.Execute(image)
         #print("usiBLUBr")
+
+        # TODO : add random noise?
+
+        """ 2023-12-13-09-09-31 
+        grayscaleConnClosingFilter = sitk.GrayscaleConnectedClosingImageFilter()
+        image = grayscaleConnClosingFilter.Execute(image)
+        """
+
+        """ 2023-12-13-10-14-16
+        fillholeImageFilter = sitk.GrayscaleFillholeImageFilter()
+        image = fillholeImageFilter.Execute(image)"""
+
+        """ 2023-12-13-10-37-00
+        grayscaleOpening = sitk.GrayscaleMorphologicalOpeningImageFilter()
+        image = grayscaleOpening.Execute(image)  # """
+
+        """ 2023-12-13-13-36-54
+        grayscaleClosing = sitk.GrayscaleMorphologicalClosingImageFilter()
+        image = grayscaleClosing.Execute(image)  # """
+
+        """ 2023-12-13-09-45-13
+        minMaxCurvatureFilter = sitk.MinMaxCurvatureFlowImageFilter()
+        image = minMaxCurvatureFilter.Execute(image)"""
+
+        """# seems almost like bilateral?
+        # 2023-12-13-11-07-01 (default), 2023-12-13-14-04-13 (numOfIterations = 10)
+        curvatureFlowImageFilter = sitk.CurvatureFlowImageFilter()
+        curvatureFlowImageFilter.SetNumberOfIterations(10)
+        image = curvatureFlowImageFilter.Execute(image)  # """
+
+        """# took too long ... (Alpha 0.5, Beta 0.5, Radius 20), 2023-12-13-15-04-31 (Alpha 0.5, Beta 0.5, Radius 5)
+        adaptiveHistoEqual = sitk.AdaptiveHistogramEqualizationImageFilter()
+        adaptiveHistoEqual.SetAlpha(0.5)
+        adaptiveHistoEqual.SetBeta(0.5)
+        adaptiveHistoEqual.SetRadius(10)
+        image = adaptiveHistoEqual.Execute(image)  # """
+
+        """#  2023-12-17-08-56-12 
+        sharpenImgFilter = sitk.LaplacianSharpeningImageFilter()
+        image = sharpenImgFilter.Execute(image)  # """
 
         return image
 
